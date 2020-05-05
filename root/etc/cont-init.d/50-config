@@ -65,6 +65,9 @@ cp -R /config/fail2ban/action.d /etc/fail2ban/
 cp /defaults/fail2ban/fail2ban.local /etc/fail2ban/
 cp /config/fail2ban/jail.local /etc/fail2ban/jail.local
 
+# set authelia external address (first time only)
+sed -i "s|SERVER_URL|${URL}|g" /defaults/authelia.conf
+
 # copy crontab and proxy defaults if needed
 [[ ! -f /config/crontabs/root ]] && \
 	cp /etc/crontabs/root /config/crontabs/
@@ -74,6 +77,8 @@ cp /config/fail2ban/jail.local /etc/fail2ban/jail.local
 	cp /defaults/ssl.conf /config/nginx/ssl.conf
 [[ ! -f /config/nginx/ldap.conf ]] && \
 	cp /defaults/ldap.conf /config/nginx/ldap.conf
+[[ ! -f /config/nginx/authelia.conf ]] && \
+	cp /defaults/authelia.conf /config/nginx/authelia.conf
 
 # check to make sure DNSPLUGIN is selected if dns validation is used
 [[ "$VALIDATION" = "dns" ]] && [[ ! "$DNSPLUGIN" =~ ^(aliyun|cloudflare|cloudxns|cpanel|digitalocean|dnsimple|dnsmadeeasy|domeneshop|gandi|google|inwx|linode|luadns|nsone|ovh|rfc2136|route53|transip)$ ]] && \
